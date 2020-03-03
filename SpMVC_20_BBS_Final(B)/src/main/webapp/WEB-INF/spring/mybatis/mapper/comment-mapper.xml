@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.biz.bbs.repository.CommentDao">
+ 
+ 
+ 	<select id="findByBId" resultType="CommentVO">
+ 		SELECT * FROM tbl_comment WHERE c_b_id = #{b_id}
+ 	</select>
+
+ 	<insert id="insert" parameterType="CommentVO">
+ 	
+ 	INSERT INTO tbl_comment(C_ID,
+C_P_ID,
+C_DATE_TIME,
+C_WRITER,
+C_SUBJECT, C_B_ID) VALUES(SEQ_COMMENT.NEXTVAL,
+
+#{c_p_id, jdbcType=VARCHAR},
+#{c_date_time, jdbcType=VARCHAR},
+#{c_writer, jdbcType=VARCHAR},
+#{c_subject, jdbcType=VARCHAR},
+#{c_b_id, jdbcType=VARCHAR})
+ 	
+ 	</insert>
+ 	
+ 	
+ 	<update id="update" parameterType="CommentVO">
+ 		UPDATE tbl_comment SET
+C_WRITER = #{c_writer},
+C_SUBJECT = #{c_subject},
+ WHERE C_ID = #{c_id}
+ 	</update>
+
+
+ 
+ </mapper> 

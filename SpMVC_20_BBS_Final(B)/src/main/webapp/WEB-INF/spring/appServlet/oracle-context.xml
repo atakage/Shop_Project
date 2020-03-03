@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+
+	<bean id="oracleDS" class="org.apache.commons.dbcp2.BasicDataSource" >
+	
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="bbsfinal"/>
+		<property name="password" value="bbsfinal"/>
+	
+	
+	</bean>
+	
+	
+	<!-- mapperLocation: xml mapper를 사용하기 위한 설정 -->
+	<!-- typeAliasePackage: vo 클래스를 자동으로 type 설정하기 위하여 -->
+	<!-- jdbcTypeForNull: 코딩 중 테스트를 수행하면서 NOT NULL이 아닌 컬럼은 데이터 입력 없이 insert, update를 수행할 수 있음
+			그 과정에서 mybatis SQL이 수행되며 부적절한 11111이라는 Exception이 발생하는데
+			이 Exception을 방지하기 위해 insert, update 쿼리문에 jdbcType=VARCHAR 등의 속성을 추가해야 하는데 컬럼이 많으면 중복 코드를 계속 작성해야하는 불편함이 있음 
+			그것을 속성값으로 등록해 주면 쿼리문에서 생략 가능
+			-->
+			
+	<!-- mapUnderscoreToCamelCase 테이블의 컬럼이름은 snack-case로 작성하고 vo 클래스의 필드 변수는 Camel-case로 작성했을 때
+	이름 자동 전환을 통해 table과 연동되게 하는 옵션
+	우리 프로젝트에서는 vo클래스 필드변수를 snack-case로 작성하므로 이 옵션을 false로 (default:false) -->
+ 	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+ 	
+		<property name="dataSource" ref="oracleDS"/>
+		<property name="mapperLocations" value="/WEB-INF/spring/mybatis/mapper/*-mapper.xml"/>
+		<property name="typeAliasesPackage" value="com.biz.bbs.domain"/>
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="jdbcTypeForNull" value="VARCHAR"/>
+				<property name="mapUnderscoreToCamelCase" value="false"/>
+				<property name="cacheEnabled" value="true"/>
+				<property name="defaultExecutorType" value="REUSE"/>
+				<property name="logPrefix" value="MY-BATIS"/>
+			</bean>
+		</property>
+	</bean>
+
+
+	<!-- transaction 자동화 설정 -->
+	<tx:annotation-driven/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	
+		<property name="dataSource" ref="oracleDS"/>
+	
+	</bean>
+	
+	<!-- Annotation 방식  query 사용을 위한 설정-->
+	<mybatis-spring:scan base-package="com.biz.bbs.repository"/>
+
+
+</beans>
