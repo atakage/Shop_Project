@@ -46,7 +46,7 @@
 	<!-- 사용자 인증을 할 때 우리가 만든 login form과 연동하기 위한 설정 -->
 	<!-- 
 	
-	POST 방식에서 서버에 데이터를 전송할 대 반드시 서버가 제공한 인증관련 token을 포함해라라는 설정 (false:token포함 필요없음)
+	POST 방식에서 서버에 데이터를 전송할 대 반드시 서버가 제공한 인증관련 token을 포함해라라는 설정 (true:token포함 필요없음)
 	<security:csrf disabled="false"/>
 	
 	logout 기능을 별도로 만들지 않고 spring security가 제공하는 logout 기능을 사용 ( 내가만든 /logout 과 겹치면?)
@@ -76,7 +76,7 @@
 		<security:intercept-url pattern="/user/**" access="permitAll()"/>
 		
 		<security:intercept-url pattern="/**" access="permitAll()"/>
-		<security:form-login login-page="/login" login-processing-url="" default-target-url="" username-parameter="username" password-parameter="password"/>
+		<security:form-login login-page="/user/login" login-processing-url="" default-target-url="" username-parameter="username" password-parameter="password"/>
 		<security:logout logout-url="/logout" invalidate-session="true" logout-success-url=""/>
 	</security:http>
 
