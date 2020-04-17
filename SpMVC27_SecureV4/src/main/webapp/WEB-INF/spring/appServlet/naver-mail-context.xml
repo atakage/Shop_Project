@@ -13,7 +13,7 @@
 		<property name="host" value="smtp.naver.com"/>
 		<property name="port" value="465"/>
 		<property name="username" value="atakoko"/>
-		<property name="password" value=""/>
+		<property name="password" value="1"/>
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.transport.protocol">smtp</prop>

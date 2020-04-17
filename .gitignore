@@ -165,5 +165,5 @@ Blog
 About
 Press h to open a hovercard with more details.
 
-
+git rm --cached ./SpMVC27_SecureV4/src/main/webapp/WEB-INF/spring/appServlet/g-mail-context.xml
 *-mail-context.xml
