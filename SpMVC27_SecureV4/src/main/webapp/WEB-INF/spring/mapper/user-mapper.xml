@@ -23,7 +23,7 @@
 
 
 	<resultMap type="userDetailsVO" id="userAndAuthorities">
-
+		
 		<id column="id" property="id" />
 		<result property="username" column="username" />
 
