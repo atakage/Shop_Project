@@ -21,7 +21,8 @@
 		FROM tbl_users
 	</select>
 
-
+	<!-- collection property는 UserDetailsVO의 collection 변수명 authorities  	
+	-->
 	<resultMap type="userDetailsVO" id="userAndAuthorities">
 		
 		<id column="id" property="id" />
