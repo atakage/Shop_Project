@@ -2,6 +2,10 @@ package com.biz.sec.controller;
 
 import java.security.Principal;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,7 @@ public class UserController {
 	
 	
 	private final UserService userService;
+	private final PasswordEncoder passwordEncoder;
 
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -69,6 +74,22 @@ public class UserController {
 	}
 	
 	
+	
+	@ResponseBody
+	@RequestMapping(value="/password", method=RequestMethod.POST)
+	public String password(String password) {
+		
+		log.debug("패스워드:" + password);
+		boolean ret = userService.check_password(password);
+		log.debug("체크 결과:" + ret);
+		if(ret) return "PASS_OK";
+		return "PASS_FAIL";
+		
+		
+		
+	}
+	
+	
 	@ResponseBody
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String user() {
@@ -79,6 +100,7 @@ public class UserController {
 	
 	
 	
+	
 	@RequestMapping(value="/mypage", method=RequestMethod.GET)
 	public String mypage(Model model, Principal principal) {
 		
@@ -86,9 +108,33 @@ public class UserController {
 		//UserDetailsVO userVO = userService.findById(id);
 		//model.addAttribute("userVO", userVO);
 		
+		UsernamePasswordAuthenticationToken upa = (UsernamePasswordAuthenticationToken) principal;
 		
-		model.addAttribute("PRINCIPAL", principal);
+		UserDetailsVO userVO = (UserDetailsVO)upa.getPrincipal();
 		
-		return "user/mypage";
+		model.addAttribute("userVO", userVO);
+		
+		return "auth/user_view";
 	}
+	
+	
+	@RequestMapping(value="/mypage", method=RequestMethod.POST)
+	public String mypage(Model model, UserDetailsVO userVO) {
+	
+		
+		Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
+		
+		log.debug("oldAuth: "+ oldAuth.toString());
+		
+		int ret = userService.update(userVO);
+		
+		if(ret > 0) {
+			Authentication newAuth = new UsernamePasswordAuthenticationToken((Principal)userVO, oldAuth.getCredentials());
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+		}
+		
+		return "redirect:/user/mypage";
+		
+	}
+	
 }

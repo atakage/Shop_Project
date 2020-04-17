@@ -55,25 +55,29 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		// UserVO userVO = userDao.findByUserName(username);
 		
 		// spring security가 사용할 DetailVO 선언
-		UserDetailsVO userDetails = userDao.findByUserName(username);
+		UserDetailsVO userDetailsVO = userDao.findByUserName(username);
+		if(userDetailsVO == null) {
+			throw new UsernameNotFoundException("User Name이 없습니다");
+		}
+		
 //		userDetails.setUsername(userVO.getUsername());
 //		userDetails.setPassword(userVO.getPassword());
-		userDetails.setEnabled(true);
+		userDetailsVO.setEnabled(true);
 		
 		// 사용자 정보를 사용할 수 있는가 아닌가를 세밀하게 제어하기 위한 컬럼
-		userDetails.setAccountNonExpired(true);
-		userDetails.setAccountNonLocked(true);
-		userDetails.setCredentialsNonExpired(true);
+		userDetailsVO.setAccountNonExpired(true);
+		userDetailsVO.setAccountNonLocked(true);
+		userDetailsVO.setCredentialsNonExpired(true);
 		
-		userDetails.setAuthorities(this.getAuthorities(username));
+		userDetailsVO.setAuthorities(this.getAuthorities(username));
 		
-		userDetails.setPhone("010-1111-1234");
-		userDetails.setEmail("callor@callor.com");
-		userDetails.setAddress("광주광역시");
+		userDetailsVO.setPhone("010-1111-1234");
+		userDetailsVO.setEmail("callor@callor.com");
+		userDetailsVO.setAddress("광주광역시");
 		
 		
 		
-		return userDetails;
+		return userDetailsVO;
 	}
 	
 	

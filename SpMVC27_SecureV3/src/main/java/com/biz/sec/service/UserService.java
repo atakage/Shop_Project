@@ -3,16 +3,20 @@ package com.biz.sec.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.domain.UserVO;
 import com.biz.sec.persistence.UserDao;
+import com.mysql.cj.log.Log;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Service
 public class UserService {
 
@@ -122,6 +126,35 @@ public class UserService {
 		
 		// TODO Auto-generated method stub
 		return userVO;
+	}
+
+
+
+
+
+
+	public boolean check_password(String password) {
+		// TODO Auto-generated method stub
+		
+		
+		UserDetailsVO userVO = (UserDetailsVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		
+		
+		return passwordEncoder.matches(password, userVO.getPassword());
+	}
+
+
+
+
+
+
+	public int update(UserDetailsVO userVO) {
+		// TODO Auto-generated method stub
+		
+		int ret = userDao.update(userVO);
+		return ret;
 	}
 	
 }

@@ -50,30 +50,30 @@ public class AuthProviderImpl implements AuthenticationProvider{
 		log.debug("입력 패스워드: " + passwordEncoder.encode(password).toString());
 		
 		// service -> Dao 통해서 dB로부터 사용자 정보 가져오기
-		UserDetailsVO user = (UserDetailsVO) userDService.loadUserByUsername(username);
+		UserDetailsVO userVO = (UserDetailsVO) userDService.loadUserByUsername(username);
 		
-		log.debug("보관 패스워드: "+  user.getPassword());
+		log.debug("보관 패스워드: "+  userVO.getPassword());
 		
 		log.debug("PASS {}",password);
 		
-		log.debug("비번 매치 {}", passwordEncoder.matches(password, user.getPassword()));
+		log.debug("비번 매치 {}", passwordEncoder.matches(password.trim(), userVO.getPassword().trim()));
 		
 		
-		if(!passwordEncoder.matches(password, user.getPassword())) {
+		if(!passwordEncoder.matches(password.trim(), userVO.getPassword().trim())) {
 			
 			// throw new BadCredentialsException("비밀번호 오류");
 			
 		}
 		
 		// enabled false이면, 사용금지된 username일 경우
-		if(!user.isEnabled()) {
+		if(!userVO.isEnabled()) {
 			throw new BadCredentialsException(username + ": 접근권한 없음");
 		}
 		
 		
 		
 		// UserDetailService에서 보내준 사용자 정보를 Controller로 보내는 일을 수행
-		return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+		return new UsernamePasswordAuthenticationToken(userVO, null, userVO.getAuthorities());
 	}
 
 	@Override
