@@ -113,6 +113,11 @@ public class UserController {
 //		return userVO;
 	}
 
+	
+	
+	/*
+	 * mypage에서 저장을 눌렀을 때 form에 입력된 데이터가 userVO에 담겨서 전달되어 옴
+	 */
 	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
 	public String mypage(UserDetailsVO userVO,Principal principal,
 					String[] auth, Model model) {

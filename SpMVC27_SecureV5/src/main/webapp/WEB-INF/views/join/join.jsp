@@ -269,7 +269,7 @@ $(function(){
 	<%@ include file="/WEB-INF/views/include/include-nav.jspf" %>
 
 	<form:form method="POST" modelAttribute="userVO"
-			action="${rootPath}/join/user" 
+			action="${rootPath}/join/join_next" 
 			class="join_form">
 			
 		<h2>회원가입</h2>
