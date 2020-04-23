@@ -205,7 +205,8 @@ $(function(){
 			// 데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			beforeSend : function(ajaxReq)
             {   
-                ajaxReq.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+				
+                ajaxReq.setRequestHeader("${_csrf.parameterName}", "${_csrf.token}");		// csrf.headerName: ??? 
             },
 			url : "${rootPath}/user/idcheck",
 			method : "POST",
@@ -236,23 +237,40 @@ $(function(){
 	// 현재 DOM 화면에 class가 view_pass인 모든것에 적용
 	$(".view_pass").each(function(index,input){
 		
+		
+	
 		// 매개변수로 전달된 input을 선택하여
 		// 변수 $input에 임시 저장하라
 		let input_ref = $(input)
+		
+		
 		$("input#view_pass").click(function(){
 			let change = $(this).is(":checked") 
 					? "text" 
 						: "password";
 			// 가상의 input 생성
 			// <input type='text'> 또는 <input type='password'>
-			let ref = $("<input type='" + change + "' />")
+			
+			let ref
+			if(index == 0){
+				ref = $("<input type='" + change + "'id='password' name='password' class='view_pass' />")
 				.val(input_ref.val())
 				.insertBefore(input_ref);
+			}else{
+				ref = $("<input type='" + change + "'id='re_password' name='re_password' class='view_pass' />")
+				.val(input_ref.val())
+				.insertBefore(input_ref);
+			}
 			
+
 			input_ref.remove();
 			input_ref = ref;
 		})	
 	})
+	
+	
+	
+	
 })
 </script>
 	<style>

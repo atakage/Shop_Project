@@ -67,7 +67,7 @@
 	그렇지 않으면(로그인 안되어 있는 경우, 권한이 없는 경우)에는
 	login 화면으로 redirection 한다.
 	
-	access="hasRole()" : 한가지의 권한 체크할때
+	access="hasRole()" : 한가지의 권한 체크할때, 여러 개 추가하려면 ???
 	access="hasAnyRole()" : 두가지 이상의 권한중에 
 			한가지라도 일치하는지 체크
 	access="permitAll()" : 별도에 인증절차 없이 통과 
