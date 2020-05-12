@@ -17,6 +17,7 @@ import com.biz.sec.persistance.AuthoritiesDao;
 import com.biz.sec.persistance.UserDao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /*
  * 사용자의 상세정보를 DB로 부터 가져와서
@@ -24,8 +25,9 @@ import lombok.RequiredArgsConstructor;
  * 
  * UserDetailService 인터페이스를 가져와서 Customizing한다.
  */
+@Slf4j
 @RequiredArgsConstructor
-@Service("userDetailsService")
+@Service("userDetailsService")   // qualifier의 userDetailsService을 가져와 붙임
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	/*
@@ -74,6 +76,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //		userVO.setPhone("010-111-1234");
 //		userVO.setEmail("callor@callor.com");
 //		userVO.setAddress("광주광역시");
+		
+		log.debug("USERVO: " + userVO.toString());
 		
 		return userVO;
 	

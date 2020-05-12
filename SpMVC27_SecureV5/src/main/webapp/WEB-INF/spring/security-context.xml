@@ -31,6 +31,10 @@
 	이 횟수가 크면 클수록 암호화 정도가 깊어지는데
 	너무 크면 프로젝트 실행시간이 과도하게 길어는 현상이 발생
 	-->
+	<bean id="grantedAuthorityDefaults" class="org.springframework.security.config.core.GrantedAuthorityDefaults">
+		<constructor-arg value="ROLE_"/>
+	</bean>
+	
 	<bean id="passwordEncoder" 
 			class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 			<constructor-arg index="0" value="4"/>
