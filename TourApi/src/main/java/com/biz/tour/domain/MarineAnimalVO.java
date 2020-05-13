@@ -24,11 +24,12 @@ public class MarineAnimalVO {
 	private String fileNm;//파일명		100	필수	http://ecosea.go .kr/data/P2/ 200801231438120. jpg	NULL
 	//private long lat;//위도		20	필수	35˚ 12´ 50˝	NULL
 	//private long lon;//경도		20	필수	128˚ 37´ 9˝	NULL
-	private long latD;//	위도_도	2	필수	35	NULL
-	private long latM;//	위도_분	2	필수	12	NULL
-	private String latS;//위도_초		4,2	필수	50	NULL   //
-	private long lonD;//경도_도		2	필수	128	NULL
-	private long lonM;//경도_분		2	필수	37	NULL
-	private String lonS;//경도_초		4,2	필수	9.00	NULL
+	private double latD;//	위도_도	2	필수	35	NULL
+	private double latM;//	위도_분	2	필수	12	NULL
+	private double latS;//위도_초		4,2	필수	50	NULL   //
+	private double lonD;//경도_도		2	필수	128	NULL
+	private double lonM;//경도_분		2	필수	37	NULL
+	private double lonS;//경도_초		4,2	필수	9.00	NULL
+	
 
 }

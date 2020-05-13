@@ -41,9 +41,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MarineAnimalService {
+	
+	
+	double baseMapX = 35;
+	double baseMapY = 128;
+	
 
 	public JsonArray getAnimals() throws ParseException {
 		// TODO Auto-generated method stub
+		
+		
+		
+		
 		
 		String queryURL = "http://apis.data.go.kr/B551979/marineOrganismInhabitInfoService/getHabitatGisList";
 		String serviceKey = "2D5rJ2dlm%2BXKIkVprSSgKI0HU08V%2FYBLqD8l%2Furac2yM3d8LozeI%2BZJmfDX9%2BsAZY7abFzCGzXhRWQL%2BcQdgSA%3D%3D";
@@ -52,7 +61,7 @@ public class MarineAnimalService {
 	
 		try {
 			
-			queryURL = queryURL + "?ServiceKey=" + serviceKey + "&pageNo=" + 1 + "&numOfRows=" + 2 + "&_type=json";
+			queryURL = queryURL + "?ServiceKey=" + serviceKey + "&pageNo=" + 1 + "&numOfRows=" + 10 + "&_type=json";
 			
 			
 			URL url = new URL(queryURL);
@@ -89,7 +98,7 @@ public class MarineAnimalService {
 			e.printStackTrace();
 		}
 		
-	 	JsonObject responseJsonObj = this.strToJson(response.toString());
+	 	this.jSonStrToList(response.toString());
 		
 	 	
 		
@@ -98,7 +107,7 @@ public class MarineAnimalService {
 
 
 
-	public JsonObject strToJson(String response) throws ParseException {
+	public List<MarineAnimalVO> jSonStrToList(String response) throws ParseException {
 
 		 JsonElement responseJsonElement = JsonParser.parseString(response);
 		 
@@ -108,8 +117,9 @@ public class MarineAnimalService {
 		 JsonObject responseGetItem = (JsonObject) responseJsonObj.get("response");
 		 responseGetItem = (JsonObject) responseGetItem.get("body");
 		 responseGetItem = (JsonObject) responseGetItem.get("items");
-		 JsonArray responseJsonArr = responseGetItem.getAsJsonArray("item");
+		 JsonArray responseJsonArr = (JsonArray) responseGetItem.getAsJsonArray("item");
 		 
+		
 	
 		 	
 		 
@@ -126,10 +136,183 @@ public class MarineAnimalService {
 		 	log.debug("ABCD:" + marinList.toString());
 		 	
 		 	
+		 	
+		 	
+		 	String sciKr = "";
+		 	
+		 	
+		 	
+		 	// 낚시 base의 위도 경도 degree와 일치하는 해양생물의 리스트 모으기(view에 실제 뿌려질 vo리스트(sciKr, chrtr, distrInh, latD, lonD)) 
+		 	List<MarineAnimalVO> selectedMarinList = new ArrayList<MarineAnimalVO>();
+		 	
+		 	for(int i = 0; i < marinList.size()-1; i++) {
+		 		
+
+		 		
+		 		log.debug("IF 전 SCIKR 와 비교:" + sciKr + ":" + marinList.get(i).getSciKr());
+		 		
+		 		// if문 세 번째 조건은 이름이 중복된 해양생물 add를 피하기 위함 
+		 		if(baseMapX == marinList.get(i).getLatD() && baseMapY == marinList.get(i).getLonD() && !sciKr.equals(marinList.get(i).getSciKr())) {
+		
+		 			
+		 			
+		 			MarineAnimalVO vo = new MarineAnimalVO();
+		 			
+		 			vo.setSciKr(marinList.get(i).getSciKr());
+		 			vo.setChrtr(marinList.get(i).getChrtr());
+		 			vo.setDistr(marinList.get(i).getDistr());
+		 			vo.setLatD(marinList.get(i).getLatD());
+		 			vo.setLonD(marinList.get(i).getLonD());
+		 			
+		 			
+		 			sciKr = marinList.get(i).getSciKr();
+		 			
+		 			
+		 			
+		 			selectedMarinList.add(vo);
+		 			
+		 			
+		 			
+		 			
+		 			
+		 			
+		 			log.debug("IF 안 SCIKR 와 비교:" + sciKr + ":" + marinList.get(i).getSciKr());
+		 			
+		 		}
+		 		
+		 		
+		 		
+		 		
+		 		
+		 	}
+
+		 	
+		 	log.debug("좌표값이 같은 vo들의 리스트: " + selectedMarinList.toString());
+		 	log.debug("그 VO의 사이즈: " + selectedMarinList.size());
+		 	
+		 	// 해양생물의 도분초(DMS)를 위도 경도로 변환
+		 	//this.dmsToDegree(latD, latM, latS, lonD, lonM, lonS);
+		 	
+		 	
+		 	
+		 	
+		 	
 		 
-		 return responseJsonObj;
+		 return null;
 		
 	}
+	
+	
+	/*
+
+	계산법
+	  
+	  -dms to degree 
+degree = Math.signum(d) * (Math.abs(d) + (m / 60.0) + (s / 3600.0));
+	  
+	  
+	 
+	 */
+	// dms to degree 
+	public void dmsToDegree(double latD, double latM, double latS, double lonD, double lonM, double lonS) {
+		
+
+		
+
+		
+		
+		
+		
+		
+		double AniMapX = Math.signum(latD) * (Math.abs(latD) +(latM/60.0) + (latS/3600.0));
+		double AniMapY = Math.signum(lonD) * (Math.abs(lonD) +(lonM/60.0) + (lonS/3600.0));
+		
+		
+		
+		
+		
+		
+		
+		log.debug("ANIMAPX 위도: " + AniMapX);
+		log.debug("ANIMAPX 경도: " + AniMapY);
+		
+		
+		
+		
+		
+		
+		final double R = 6372.8;
+		
+		double dLat = Math.toRadians(baseMapX-AniMapX);
+		double dLon = Math.toRadians(baseMapY-AniMapY);
+		
+		baseMapX = Math.toRadians(baseMapX);
+		AniMapX = Math.toRadians(AniMapX);
+		
+		double a = Math.pow(Math.sin(dLat/2),2)+Math.pow(Math.sin(dLon/2), 2) * Math.cos(baseMapX) * Math.cos(AniMapX);
+		double c = 2 * Math.asin(Math.sqrt(a));
+		
+		  double distance = R * c;
+		 
+		 log.debug("DISTANCE: " + distance);
+		
+		
+		
+		
+
+	}
+	
+	
+	
+	
+	/*
+			위도 경도 두 지점간의 거리 계산
+
+		public class Haversine {
+    public static final double R = 6372.8; // In kilometers
+    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return R * c;
+    }
+    public static void main(String[] args) {
+        System.out.println(haversine(36.369649, 127.380346, 36.369653,127.382205)); // --> 0.16649327065379554
+    }
+}
+
+
+
+	 */
+	public void Haversine(double baseMapX, double baseMapY, double AniMapX, double AniMapY) {
+		
+		
+		
+		
+		
+		final double R = 6372.8;
+		
+		double dLat = Math.toRadians(baseMapX-AniMapX);
+		double dLon = Math.toRadians(baseMapY-AniMapY);
+		
+		baseMapX = Math.toRadians(baseMapX);
+		AniMapX = Math.toRadians(AniMapX);
+		
+		double a = Math.pow(Math.sin(dLat/2),2)+Math.pow(Math.sin(dLon/2), 2) * Math.cos(baseMapX) * Math.cos(AniMapX);
+		double c = 2 * Math.asin(Math.sqrt(a));
+		
+		  double distance = R * c;
+		 
+		 log.debug("DISTANCE: " + distance);
+	}
+	
+	
+	
+
 	
 	
 	
