@@ -1,11 +1,15 @@
 package com.biz.shop.config.utils;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Scanner;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 /*
  * 키보드에서 문자열을 입력받아서
@@ -23,7 +27,7 @@ public class MySQLEnc {
 		StandardPBEStringEncryptor pbEnc = new StandardPBEStringEncryptor();
 		
 		Map<String,String> envList = System.getenv();
-		System.out.println(envList.get("ORACLE_PASS"));
+		System.out.println(envList.get("BIZ.COM"));
 		
 		Scanner scanner = new Scanner(System.in);
 		
@@ -49,25 +53,32 @@ public class MySQLEnc {
 		String saveFile = "./src/main/webapp/WEB-INF/"
 				+ "spring/db.connection.properties";
 		
+		ResourceLoader resLoader = new DefaultResourceLoader();
+		Resource res = resLoader.getResource("file:src/main/resources/db.connection2.properties");
 		
-		String saveUserName = String.format("mysql.username=ENC(%s)",
+	
+		String saveUserName = String.format("mysql.username=%s",
 							encUserName);
-		String savePassword = String.format("mysql.password=ENC(%s)",
+		String savePassword = String.format("mysql.password=%s",
 							encPassword);
 
 		
 		try {
-			PrintWriter out = new PrintWriter(saveFile);
+			PrintWriter out = new PrintWriter(res.getFile());
 			out.println(saveUserName);
 			out.println(savePassword);
 			out.flush();
 			out.close();
+			System.out.println(res.getFile().toString() + "db.connection.properties 저장 완료!!!");
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		scanner.close();
-		System.out.println("db.connection.properties 저장 완료!!!");
+		
 
 	}
 }
