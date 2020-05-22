@@ -33,22 +33,32 @@ public class ServletConfig implements WebMvcConfigurer{
 		
 		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
 		
+		registry.addResourceHandler("/upload/**").addResourceLocations("file:///bizwork/upload/");		// file == c드라이브?
+		
 		
 		
 		WebMvcConfigurer.super.addResourceHandlers(registry);
 	}
 	
 	
+	
+	@Bean(name="filePath")
+	public String filePath() {
+		return "c:/bizwork/upload";
+	}
+	
+	
+	
 	/*
 	 * fileUpload를 하기 위한 설정
 	 */
 	
-	@Bean
-	public MultipartResolver multiResolver() {
+	@Bean(name="multipartResolver")
+	public MultipartResolver multipartResolver() {
 		
 		MultipartResolver mr = new CommonsMultipartResolver();
-		((CommonsMultipartResolver)mr).setMaxUploadSize(1000000);
-		((CommonsMultipartResolver)mr).setMaxUploadSizePerFile(100000);
+		((CommonsMultipartResolver)mr).setMaxUploadSize(1000 * 1000 * 20);
+		((CommonsMultipartResolver)mr).setMaxUploadSizePerFile(1000 * 1000 * 2);
 		
 		return mr;
 	}
