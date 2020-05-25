@@ -2,22 +2,10 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
+    
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- Popper JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 
 
@@ -27,7 +15,10 @@
 
 
 .marineListBoxDiv{
-	border: 1px solid red;
+	background: whitesmoke;
+	text-align: center;
+	border-left: 2px solid mediumblue;
+	border-right: 2px solid mediumblue;
     width: 90%;
     margin: 0 auto;
     flex-wrap: wrap;
@@ -37,7 +28,7 @@
 }
 
 .listContent{
-	border: 1px solid black;
+
 	width:150px;
 	height:150px;
 	margin: 0 auto;
@@ -45,6 +36,7 @@
 }
 
 .listContentTitle{
+	background-color:white;
 	border: 1px solid black;
 	width:150px;
 	height:150px;
@@ -63,7 +55,7 @@
 }
 
 .allCoverBoxDiv{
-	border:1px solid green;
+
 	display: flex;
 }
 
@@ -87,13 +79,94 @@
 
 .nextBtnA{
 	align-self: center;
+	    font-weight: bold;
+    font-size: xxx-large;
+    color:  mediumblue;
 }
+
+
+.nextBtn:hover{
+	cursor: pointer;
+	background-color: mediumblue;
+}
+
+.nextBtn:hover .nextBtnA{
+	color:white;
+}
+
+
 
 .prevBtnA{
 	align-self: center;
+	    font-weight: bold;
+    font-size: xxx-large;
+  	color:  mediumblue;
 }
 
+.prevBtn:hover{
+	cursor: pointer;
+	background-color: mediumblue;
+}
+
+.prevBtn:hover .prevBtnA{
+	color:white;
+}
+
+.title{
+	display: none;
+}
+
+.description{
+	display:none;
+}
+
+.descriptionAtTitle{
+	display:none;
+}
+
+.tooltip-inner{
+	background-color: mediumblue;
+}
+
+.marineBoxTitle{
+	font-size: xx-large;
+	font-weight: bold;
+	margin: 50px 50px;
+}
+
+
+
+
+.chatBoxDiv{
+	display: block;
+	
+}
+
+
+.flexDiv{
+	display: flex;
+}
+
+.connectUserDiv{
+	border: 1px solid black;
+	width: 200px;
+	height: 400px;
+}
+
+.chatBox{
+	border: 1px solid black;
+	width: 400px;
+	height: 400px;
+}
+
+.chat{
+	color:red;
+}
+
+
+
 </style>
+
 
 
     
@@ -138,7 +211,7 @@ $(function(){
 		
 			$.ajax({
 				
-				url:"${rootPath}/marinelifeapi/getXYmarine", data:{mapX:33, mapY:124}, type:'get',
+				url:"${rootPath}/marinelifeapi/getXYmarine", data:{mapX:resultX, mapY:resultY}, type:'get',
 				success:function(result){
 					// 리스트 넘어옴
 					
@@ -157,18 +230,21 @@ $(function(){
 						// 제목만 제공하는 생물
 						if(marineList[i].fullInfo == false){
 							
-							$('.marineListBoxDiv').append("<div id='id" + i + "'  class='listContentTitle'>" + marineList[i].title + "<div class='descriptionAtTitle' value='" + marineList[i].description + "'></div></div>")
+							$('.marineListBoxDiv').append("<div id='id" + i + "'  class='listContentTitle' data-html='true' data-toggle='tooltip' title='"+ marineList[i].description +"'>" + marineList[i].title + "<div class='descriptionAtTitle' value='" + marineList[i].description + "'></div></div>")
+							
 							
 						// 모든 정보 제공하는 생물 중에서		
 						}else{
 						
 							// 섬네일이 있는 생물(정보 제공 완전체)
 							if(marineList[i].thumbnail.length > 0 ){
-							$('.marineListBoxDiv').append("<div id='id" + i + "' class='listContent'><img class='img-thumbnail listThumbnail' src='"  +  marineList[i].thumbnail  +"'/><div class='title' value='"+ marineList[i].title + "'></div><div class='description' value='"+ marineList[i].description + "'></div></div>")
+							//$('.marineListBoxDiv').append("<div id='id" + i + "' class='listContent' data-html='true' data-toggle='tooltip' title='"+marineList[i].title + '<br>' + marineList[i].description +"'><img class='img-thumbnail listThumbnail' src='"  +  marineList[i].thumbnail  +"'/><div class='title' value='"+ marineList[i].title + "'></div><div class='description' value='"+ marineList[i].description + "'></div></div>")	
+							$('.marineListBoxDiv').append("<div id='id" + i + "' class='listContent' data-html='true' data-toggle='tooltip' title='"+marineList[i].title + '<br>' + marineList[i].description +"'><img class='img-thumbnail listThumbnail' src='"  +  marineList[i].thumbnail  +"'/>")
 							}
 							// 섬네일이 없는 생물
 							else{
-								$('.marineListBoxDiv').append("<div id='id" + i + "' class='listContentTitle'>" + marineList[i].title + "<div class='descriptionAtTitle' value='" + marineList[i].description + "'></div></div>")
+								$('.marineListBoxDiv').append("<div id='id" + i + "' class='listContentTitle' data-html='true' data-toggle='tooltip' title='"+ marineList[i].description  +"'>" + marineList[i].title + "<div class='descriptionAtTitle' value='" + marineList[i].description + "'></div></div>")
+								
 							}
 						
 						}
@@ -183,7 +259,7 @@ $(function(){
 						
 					})
 					
-					
+					$('[data-toggle="tooltip"]').tooltip();
 					
 					
 					$('#marineListLength').val(marineList.length)
@@ -286,30 +362,26 @@ $(function(){
 </script>
 
 
+<div>
 
+<div class="marineBoxTitle">이곳의 생태계는?</div>
 
 <div class="allCoverBoxDiv">
 
-<div class="prevBtn">
-
-<div class="prevBtnA">뒤로</div>
-
-</div>
-
-<div class="marineListBoxDiv">
-
-
-</div>
-
-
-<div class="nextBtn">
-
-<div class="nextBtnA">앞으로</div>
+	<div class="prevBtn">
+	<div class="prevBtnA">&lt;</div>
+	</div>
+	
+	<div class="marineListBoxDiv">
+	
+	
+	</div>
+	
+	<div class="nextBtn">
+	<div class="nextBtnA">&gt;</div>
+	</div>
 
 </div>
-
-
-
 
 </div>
 
@@ -318,3 +390,5 @@ $(function(){
 <input class="inputClass" id="currentPage" readonly="readonly">/
 <input class="inputClass" id="marineListTotalPage" readonly="readonly">
 </div>
+
+

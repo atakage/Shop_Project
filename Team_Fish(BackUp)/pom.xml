@@ -17,6 +17,26 @@
 		<org.jasypt-version>1.9.3</org.jasypt-version>
 	</properties>
 	<dependencies>
+	
+	
+	
+	
+	<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-websocket</artifactId>
+    <version>5.2.4.RELEASE</version>
+</dependency>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

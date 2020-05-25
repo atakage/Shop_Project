@@ -8,6 +8,7 @@
 <%@ include file="/WEB-INF/views/include/include-head.jsp"%>
 <title>Detail</title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxe287b2ab163049a58075ca366a804bea"></script>
 <script type="text/javascript" >
 $(function(){
