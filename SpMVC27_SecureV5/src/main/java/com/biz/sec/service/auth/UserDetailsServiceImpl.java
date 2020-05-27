@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biz.sec.domain.AuthorityVO;
 import com.biz.sec.domain.UserDetailsVO;
@@ -48,6 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 * DB로 부터 데이터를 불러와서 UserDetailsVO에 
 	 * 데이터를 복사하여 연동하는 코드가 작성될 곳
 	 */
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -86,6 +88,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	/**
 	 * authorities 테이블에서 권한 리스트를 가져오기 
 	 */
+	@Transactional
 	private Collection<GrantedAuthority> getAuthorities(String username) {
 		
 		List<AuthorityVO> authList = authDao.findByUserName(username);

@@ -1,4 +1,4 @@
-package com.biz.shop.domain;
+package com.biz.test.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +13,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class ProColorVO {
+public class TestVO {
 
-	private long c_seq;
-	private long size_s_seq;
-	private String c_color;
-	private String o_name;
-	private int c_qty;
+	private long id;
+	private int p_id;
+	private String val;
 }

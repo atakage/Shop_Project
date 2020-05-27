@@ -94,6 +94,9 @@ public class ProductController {
 		
 		productVO = proService.findByPCode(p_code);
 		
+		
+		log.debug("브이오: " + productVO.toString());
+		
 		model.addAttribute("productVO", productVO);
 		
 		// option 정보 테이블에서 리스트 가져와 사용하기
@@ -105,7 +108,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@RequestMapping(value="/insert_size", method=RequestMethod.POST)
-	public String insert_size(ProSizeVO proSizeVO) {
+	public Object insert_size(ProSizeVO proSizeVO) {
 		
 		log.debug("SIZE: " + proSizeVO.getS_size());
 		log.debug("P_CODE: " + proSizeVO.getP_code());
@@ -117,8 +120,9 @@ public class ProductController {
 		
 		proOPTService.insert_size(proSizeVO);
 		
+		log.debug("PROSIZEVO:" + proSizeVO.toString());
 		//return proSizeVO;
-		return "OK";
+		return proSizeVO;
 	}
 	
 	

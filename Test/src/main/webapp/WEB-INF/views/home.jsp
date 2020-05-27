@@ -10,40 +10,11 @@
 
 
 
-<script>
-$(function(){
-	
-
-
-	
-	$.startAjax = function(){
-		
-		
-		var lengthVal = 5
-		
-	
-			return lengthVal
-			
-	}
-	
-	
-	var lengthResult = $.startAjax()
-	
-	
-	alert(lengthResult)
-
-
-
-
-})
-
-</script>
-
 <body>
 <h1>
 	Hello world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+>
 </body>
 </html>
