@@ -2,6 +2,8 @@ package com.biz.shop.service.impl;
 
 import java.util.List;
 
+
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,10 @@ import com.biz.shop.persistence.DDL_Dao;
 import com.biz.shop.persistence.ProOptionsDao;
 import com.biz.shop.persistence.sql.CreateTableSQL;
 import com.biz.shop.service.ProOptionsService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Transactional
 @Service
 public class ProOptionsServiceImpl implements ProOptionsService{
@@ -56,6 +62,7 @@ public class ProOptionsServiceImpl implements ProOptionsService{
 	}
 	
 	
+
 	
 	
 	@Override
@@ -66,9 +73,21 @@ public class ProOptionsServiceImpl implements ProOptionsService{
 
 
 	@Override
-	public int insert_color(ProColorVO proColorVO) {
+	public Object insert_color(ProColorVO proColorVO) {
 		// TODO Auto-generated method stub
-		return 0;
+		
+
+		int ret = proOPTDao.getProColor(proColorVO);
+		
+		log.debug("RET: " + ret);
+		// 이미 DB에 등록이 되어 있으면
+		if(ret > 0) {
+			return "EXISTS";
+		}		
+		proOPTDao.insert_color(proColorVO);
+		
+		return proColorVO;
+
 	}
 
 
@@ -77,6 +96,33 @@ public class ProOptionsServiceImpl implements ProOptionsService{
 		// TODO Auto-generated method stub
 		return proOPTDao.delete_size(proSizeVO);
 	}
+
+
+	@Override
+	public List<ProColorVO> getColorListBySize(String s_seq) {
+		// TODO Auto-generated method stub
+		
+			long longSeq = 0;
+		try {
+			longSeq = Long.valueOf(s_seq);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
+		
+		List<ProColorVO> proColorList = proOPTDao.getColorListBySize(longSeq); 
+		
+		
+		
+//		if(proColorList.size() < 1) {
+//			return null;
+//		}
+		
+		return proColorList;
+	}
+
+
 
 
 

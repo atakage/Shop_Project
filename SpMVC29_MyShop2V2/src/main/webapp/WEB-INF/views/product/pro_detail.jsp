@@ -92,6 +92,75 @@ $(function(){
 		
 		
 		
+	}) // button delete
+	
+	
+	
+	$('button.color-add').click(function(){
+		
+		
+
+		let size_seq = $('#p_size_list option:selected').data('id')
+		
+		console.log('사이즈SEQ', size_seq)
+		
+		// size select가 선택되지 않아서 size_value값이 undefinded가 되면 이 값은 false와 같음
+			if(!size_seq){
+				alert('컬러를 추가하려면 먼저 사이즈를 선택해야 함')
+				return false
+			}
+		let color_name = $('#m_color_list option:selected').text()
+		let color_value = $('#m_color_list option:selected').val()
+		
+	
+		
+		
+		
+		$.ajax({
+			url:"${rootPath}/product/color_insert", method:'post', data:{size_seq : size_seq, c_color : color_value}, beforeSend:function(ax){
+				ax.setRequestHeader('${_csrf.headerName}', '${_csrf.token}')
+			}
+		}).done(function(result){
+				
+			
+			if(result == 'EXISTS'){
+				alert('이미 등록된 컬러 리스트입니다')
+			}else{
+				$('#p_color_list').append( $("<option/>", {'data-id':result.c_seq, value:result.c_color, text:result.c_color}) )
+			}
+			
+		})
+		
+		
+		
+		
+	})// add-color end
+	
+	
+	$('#p_size_list').change(function(){
+		
+		let s_seq = $(this).find('option:selected').data('id')
+		alert(s_seq)
+		
+		$.ajax({
+			
+			url : "${rootPath}/product/get_color_list_by_size", method:'get', data:{s_seq:s_seq}
+			
+		}).done(function(color_list){
+			$('#p_color_list option').remove()
+			if(color_list == 'FAIL'){
+				alert('통신 오류')	
+			} else if(!color_list.length){
+				alert('리스트가 없음')
+			}else{	
+				color_list.forEach(function(vo){
+					$('#p_color_list').append( $('<option/>', {value:vo.c_color, text:vo.o_name, 'data-id':vo.c_seq}) )
+				})
+				
+			}
+			
+		})
+		
 	})
 	
 })
@@ -141,7 +210,7 @@ $(function(){
 						
 						
 						
-						<form:select path="p_size_list" class="form-control">
+						<form:select path="p_size_list" class="form-control" multiple="false" size="5">
 							<c:forEach items="${productVO.p_size_list}" var="vo">
 								<form:option value="${vo.s_size}" data-id="${vo.s_seq}">${vo.o_name}</form:option>
 							</c:forEach>
@@ -152,9 +221,15 @@ $(function(){
 				<div class="p_detail_white">
 
 						<h5>색상 선택</h5>
-						<form:select path="p_color_list" class="form-control" multiple='false'>
+						<form:select path="m_color_list" class="form-control" multiple='false'>
 							<form:options items="${m_color_list}" itemLabel="o_name" itemValue="o_standard"/>
 						</form:select>
+						<button type="button" class="btn btn-primary color-add">▼추가</button>
+						
+						<button type="button" class="btn btn-warning color-delete">▲삭제</button>
+						<select id="p_color_list" class="form-control" multiple="multiple">
+											
+						</select>
 					</div>
 				</div>
 			</form:form>

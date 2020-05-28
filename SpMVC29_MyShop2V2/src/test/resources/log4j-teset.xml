@@ -9,36 +9,23 @@
     </appender>
 
     <logger name="org.springframework" level="INFO" />
-    <logger name="org.mybatis"><level value="INFO"/></logger>
-    <logger name="com.biz.product.persistence"><level value="INFO"/></logger>
-    <logger name="com.biz.product.persistence.ProductDao"><level value="DEBUG"/></logger>
-    <logger name="com.biz.product.controller"><level value="DEBUG"/></logger>
-    <logger name="com.biz.product.service"><level value="DEBUG"/></logger>
-    
-    <!-- SQL Logger -->
-	<logger name="jdbc.sqltiming" additivity="false">
-		<level value="warn" />
-		<appender-ref ref="console"/> 
-	</logger>
+    <logger name="org.mybatis"><level value="DEBUG"/></logger>
 
-	<logger name="jdbc.sqlonly" additivity="false"> 
-		<level value="info"/> 
-		<appender-ref ref="console"/> 
-	</logger>
+	
+	<!-- Dao 클래스가 모여있는 persistence 패키지의 level을 trace로 해 두면 SELECT 문이 실행 되었을 때 그 결과를 Console에 log로 보여줌 -->
 
-	<logger name="jdbc.audit" additivity="false"> 
-		<level value="warn"/>  
-		<appender-ref ref="console"/> 
+	<logger name="com.biz.shop.persistence" additivity="false"> 
+		<level value="TRACE"/>  
 	</logger> 
 
-	<logger name="jdbc.resultset" additivity="false">
-		<level value="warn" />
-		<appender-ref ref="console"/> 
+	<logger name="com.biz.shop.controller" additivity="false">
+		<level value="DEBUG" />
+ 
 	</logger>
 
-	<logger name="jdbc.resultsettable" additivity="false"> 
-		<level value="info"/>  
-		<appender-ref ref="console"/> 
+	<logger name="com.biz.shop.service" additivity="false"> 
+		<level value="DEBUG"/>  
+ 
 	</logger> 
 
     <root level="TRACE">

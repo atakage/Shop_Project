@@ -1,4 +1,7 @@
 use secur;
 
-drop table tbl_pro_color;
-drop table tbl_pro_size;
+
+
+
+desc tbl_pro_size;
+DESC tbl_pro_color;

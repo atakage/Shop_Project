@@ -1,14 +1,22 @@
 use secur;
 
+drop table tbl_test;
+
 CREATE TABLE tbl_test(
 
 id bigint auto_increment primary key,
+facility_code varchar(5),
 p_id int,
 val varchar(100)
 
 );
 
-INSERT INTO tbl_test(p_id, val) VALUES(1,"첫 번째의 자식2");
+INSERT INTO tbl_test(facility_code,  val) VALUES('P001',"첫 번째 부모");
+INSERT INTO tbl_test(facility_code,  val) VALUES('P001',"두 번째 부모");
+INSERT INTO tbl_test(facility_code,  val) VALUES('P002',"세 번째 부모");
+INSERT INTO tbl_test(facility_code, p_id,  val) VALUES('P001',1,"첫 번째 부모의 자식");
+INSERT INTO tbl_test(facility_code, p_id,  val) VALUES('P001',1,"첫 번째 부모의 자식2");
+
 
 SELECT * FROM tbl_test;
 
@@ -80,13 +88,14 @@ SELECT id, p_id, val FROM(
     (SELECT @pv := '3') initialisation WHERE find_in_set(p_id, @pv) AND length(@pv := concat(@pv,',',id));
     
     
-with RECURSIVE CTE (id, p_id,val) AS(
+with RECURSIVE CTE AS(
 
-		SELECT id, p_id, val FROM tbl_test
+		SELECT id, p_id, val FROM tbl_test WHERE  id = '1'
 		
-        UNION
+        UNION all
         
         SELECT t.id, t.p_id, t.val FROM tbl_test t
         INNER JOIN CTE c on c.id = t.p_id
 )
 SELECT * FROM CTE;
+
