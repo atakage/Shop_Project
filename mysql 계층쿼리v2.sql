@@ -1,40 +1,40 @@
-with RECURSIVE CTE AS(
-
-		SELECT facility_code,id, p_id, val FROM tbl_test WHERE  id = '1'
-		
-        UNION all
-        
-        SELECT t.facility_code, t.id, t.p_id, t.val FROM tbl_test t
-        INNER JOIN CTE c on c.id = t.p_id 
-)
-SELECT * FROM CTE;
-
--- 일단 P001이며 p_id null인 값의 List<id> 들 전부 불러온 뒤 그 List<id>들로 for문 돌려서 최종산출
-
-SELECT facility_code,id, p_id, val FROM tbl_test WHERE  id = '1';
-
-SELECT * FROM tbl_test;
-
 use secur;
 
-
-
-
+drop table tbl_test;
 
 CREATE TABLE tbl_test(
 
 id bigint auto_increment primary key,
 facility_code varchar(5),
 p_id int,
-val varchar(100)
+val varchar(100),
+groupId int
 
 );
 
+INSERT INTO tbl_test(facility_code, p_id, val, groupId) VALUES('P001',1,"첫 번째 부모",0);
+INSERT INTO tbl_test(facility_code, p_id, val, groupId) VALUES('P001',2,"두 번째 부모",0);
+INSERT INTO tbl_test(facility_code, p_id, val, groupId) VALUES('P002',3,"세 번째 부모",0);
+INSERT INTO tbl_test(facility_code, p_id,  val, groupId) VALUES('P001',1,"첫 번째 부모의 자식",1);
+INSERT INTO tbl_test(facility_code, p_id,  val, groupId) VALUES('P001',3,"세 번째 부모의 자식2",1);
 
 
-INSERT INTO tbl_test(facility_code,  val) VALUES('P001',"첫 번째 부모");
-INSERT INTO tbl_test(facility_code,  val) VALUES('P001',"두 번째 부모");
-INSERT INTO tbl_test(facility_code,  val) VALUES('P002',"세 번째 부모");
-INSERT INTO tbl_test(facility_code, p_id,  val) VALUES('P001',1,"첫 번째 부모의 자식");
-INSERT INTO tbl_test(facility_code, p_id,  val) VALUES('P001',1,"첫 번째 부모의 자식2");
-INSERT INTO tbl_test(facility_code, p_id,  val) VALUES('P001',4,"첫 번째 부모의 자식의 자식");
+SELECT * FROM tbl_test;
+
+SELECT * FROM tbl_test ORDER BY p_id ASC, groupId ASC;
+
+
+
+
+
+----------------------
+
+
+QaVO
+
+groupId 컬럼 추가
+
+q는 input될 때 p_id는 id값으로 설정, groupId는 0으로
+a는 input될 때 groupId를 1로 설정
+
+auto increment는 2개 이상 불가능하니 q input 시 input 후 update 방식으로 p_id값을 넣어야...........

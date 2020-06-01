@@ -1,13 +1,11 @@
 package com.biz.test.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.biz.test.domain.TestVO;
 import com.biz.test.service.TestService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,15 +23,23 @@ public class HomeController {
 	
 	private final TestService tService;
 
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 
 		
-		tService.getQuery();
-		
-		
 		
 		return "home";
+	}
+	
+	
+	@RequestMapping(value="/callCmt", method=RequestMethod.GET)
+	public String callCmt(@RequestParam("text") String text, Model model) {
+
+		
+		model.addAttribute("text", text);
+		
+		return "cmt";
 	}
 	
 }
