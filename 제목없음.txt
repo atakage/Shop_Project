@@ -1,0 +1,5 @@
+답X VIEW answer input 시
+id(qa고유), name(시설명), username, content
+	ㄴ answer input( id, p_id(q의id, server로 값 가져오기), groupId(1), sal_seq(server로 값 가져오기), name(server로 값 가져오기), username((현재 로그인된 con계정), content, complete(1) ) 
+, answer 등록과 동시에 q complete 1로 수정 
+
