@@ -25,6 +25,10 @@ SELECT * FROM tbl_test ORDER BY p_id DESC, groupId ASC;
 
 
 
+SELECT * FROM tbl_test ORDER BY p_id DESC, groupId ASC  limit 0,3;
+
+SELECT * FROM tbl_test ORDER BY p_id DESC, groupId ASC  limit 3,3;
+
 DROP FUNCTION IF EXISTS fnc_hierarchi;
 
 DELIMITER $$
